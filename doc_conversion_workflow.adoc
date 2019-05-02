@@ -1,0 +1,63 @@
+= How to convert .docx files into .adoc files
+
+* Open file .docx and delete summary, if any. Best way is to select all doc and copy and paste it in a new file.
+* Use *MSWord* headers types in order to format all titles and subtitles properly. 
+* Install *Pandoc* using Ruby (on windows SO).
+Go to https://pandoc.org/installing.html for more info about.
+* In the right folder, use this prompt command to convert doc from .docx to .adoc:
+
+    pandoc --from=docx --to=asciidoc --wrap=none --atx-headers --extract-media=extracted-media input.docx > output.adoc
+
+* Use *AsciidocFX* tool (https://asciidocfx.com/) to check there have been no mistakes in titles formatting and to check the whole file (please be aware that sometimes bulletted list are not converted in the right way)
+* Open output.adoc using *SublimeText* (or any other text editor) (https://www.sublimetext.com/3) and edit the whole document following these steps ^[*]^:
+
+** Ctrl+ H (Find&replace)
+** Delete new line before each image, if any 
+
+ Find: Ctrl+Enter image:
+ Replace: image:_
+
+** Delete space after each "]", if any (in order to avoid automatic creation of quotes)
+
+ Find: ] space
+ Replace: ]
+
+** Delete new line after each "]", if any
+
+ Find: ] Ctrl+Enter
+ Replace: ]
+ 
+** Add 2 new lines before each image
+
+ Find: image:
+ Replace: Ctrl+Enter Ctrl+Enter image:
+ 
+** Add 2 new lines after each "]" 
+
+ Find: ]
+ Replace: ] Ctrl+Enter Ctrl+Enter
+
+^[*]^ This is the fastest way I have found to obtain a good impagination with images. Please feel free to suggest better ideas.
+
+* Add a *table of contents* at the beginning of the document. Just copy and paste these lines:
+
+ = <Titolo documento>
+ :icons: font
+ :stem:
+ :toc: left
+ :toclevels: 4
+ :url-docs: https://asciidoctor.org/docs
+ :url-gem: https://rubygems.org/gems/asciidoctor
+
+* Install the right plugin in order to obtain pdf files:
+
+ gem install ascidoctor-pdf --pre
+ 
+* Convert file from .adoc to .pdf using this command:
+
+ asciidoctor-pdf nomeFile.adoc
+
+* Convert file from .adoc to .html using this command: 
+
+ asciidoctor nomeFile.adoc
+ 
